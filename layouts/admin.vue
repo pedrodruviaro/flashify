@@ -1,8 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
+  <UContainer>
     <p>>>> layout admin <<<</p>
     <slot />
-  </div>
+  </UContainer>
 </template>
