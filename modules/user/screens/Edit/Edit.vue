@@ -5,17 +5,11 @@ import { useProfileEdit } from "~/modules/user/composables/useProfileEdit"
 
 const { user } = useUser()
 
-const { jobtitle, site, bio, loading, errors, safeParse, update } =
-  useProfileEdit({
-    user,
-  })
+const { jobtitle, site, bio, loading, errors, update } = useProfileEdit({
+  user,
+})
 
-const handleSaveEdit = async () => {
-  const isValid = safeParse().success
-  if (!isValid) return
-
-  await update()
-}
+const handleSaveProfile = async () => await update()
 </script>
 
 <template>
@@ -37,7 +31,7 @@ const handleSaveEdit = async () => {
       label="Salvar edição"
       icon="i-heroicons-pencil-square"
       trailing
-      @click="handleSaveEdit"
+      @click="handleSaveProfile"
       :loading
     />
   </div>

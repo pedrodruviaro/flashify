@@ -41,6 +41,9 @@ export function useDeckCreate({ user }: UseDeckCreateOptions) {
   const create = async () => {
     if (!userId.value) return
 
+    const isValid = safeParse().success
+    if (!isValid) return
+
     try {
       loading.value = true
 

@@ -42,6 +42,9 @@ export function useProfileEdit({ user }: UseProfileEditOptions) {
   }
 
   const update = async () => {
+    const isValid = safeParse().success
+    if (!isValid) return
+
     try {
       loading.value = true
 
@@ -90,6 +93,5 @@ export function useProfileEdit({ user }: UseProfileEditOptions) {
     loading,
     errors,
     update,
-    safeParse,
   }
 }

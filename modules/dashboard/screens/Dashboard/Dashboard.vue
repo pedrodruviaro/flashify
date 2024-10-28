@@ -22,7 +22,6 @@ const {
   description,
   errors,
   loading: loadingCreate,
-  safeParse,
   create,
 } = useDeckCreate({ user })
 
@@ -31,10 +30,8 @@ const { loading: loadingDecks, decks } = useDecksList({ user }) // filtro?
 const hasDecks = computed(() => decks.value?.length !== 0)
 
 const isModalCreateOpen = ref(false)
-const handleNewDeck = async () => {
-  const isValid = safeParse().success
-  if (!isValid) return
 
+const handleNewDeck = async () => {
   const response = await create()
   if (response) {
     isModalCreateOpen.value = false
