@@ -1,0 +1,53 @@
+<script setup lang="ts">
+const props = defineProps<{
+  id: string
+  title: string
+  createdAt: Date | string
+  description: string
+}>()
+
+const emits = defineEmits<{
+  (e: "edit", id: string): void
+  (e: "play", id: string): void
+}>()
+</script>
+
+<template>
+  <UCard
+    :ui="{
+      ring: '',
+      divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+    }"
+  >
+    <template #header>
+      <div class="flex flex-wrap justify-between gap-2 items-center">
+        <BaseTitle as="h3" size="xs" light :label="props.title" />
+        <UBadge color="white" variant="solid">
+          Criado em {{ props.createdAt }}
+        </UBadge>
+      </div>
+    </template>
+
+    <div>
+      <p class="text-stone-500 text-sm">{{ props.description }}</p>
+    </div>
+
+    <template #footer>
+      <div class="flex flex-wrap gap-2">
+        <UButton
+          color="primary"
+          variant="soft"
+          label="Editar"
+          trailing
+          @click="emits('edit', props.id)"
+        />
+        <UButton
+          color="primary"
+          variant="solid"
+          @click="emits('play', props.id)"
+          >Jogar</UButton
+        >
+      </div>
+    </template>
+  </UCard>
+</template>

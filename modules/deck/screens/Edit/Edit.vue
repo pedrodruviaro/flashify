@@ -4,8 +4,8 @@ import QuestionCardEditListLoader from "~/modules/deck/components/Question/CardE
 import QuestionCardEditList from "~/modules/deck/components/Question/CardEdit/List.vue"
 import QuestionCardEdit from "~/modules/deck/components/Question/CardEdit/CardEdit.vue"
 
-import ModalDeleteCard from "~/modules/deck/components/Modals/DeleteCard.vue"
-import ModalQuestionForm from "~/modules/deck/components/Modals/QuestionForm.vue"
+import LazyModalDeleteCard from "~/modules/deck/components/Modals/DeleteCard.vue"
+import LazyModalQuestionForm from "~/modules/deck/components/Modals/QuestionForm.vue"
 
 const deck = {
   id: 1,
@@ -55,7 +55,7 @@ const answer = ref("")
 const modal = useModal()
 
 const handleAddQuestion = async () => {
-  modal.open(ModalQuestionForm, {
+  modal.open(LazyModalQuestionForm, {
     question: question.value,
     answer: answer.value,
     "onUpdate:question": (val: string) => (question.value = val),
@@ -71,7 +71,7 @@ const handleAddQuestion = async () => {
 }
 
 const handleEditQuestion = async (id: string) => {
-  modal.open(ModalQuestionForm, {
+  modal.open(LazyModalQuestionForm, {
     action: "edit",
     question: question.value,
     answer: answer.value,
@@ -88,7 +88,7 @@ const handleEditQuestion = async (id: string) => {
 }
 
 const handleRemoveQuestion = async (id: string) => {
-  modal.open(ModalDeleteCard, {
+  modal.open(LazyModalDeleteCard, {
     onSuccess: () => {
       // REMOVE QUESTION LOGIC
       modal.close()
