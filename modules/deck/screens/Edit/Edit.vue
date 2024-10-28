@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HeadlineLoader from "~/modules/deck/components/Headline/Loader.vue"
 import Headline from "~/modules/deck/components/Headline/Headline.vue"
 import QuestionCardEditListLoader from "~/modules/deck/components/Question/CardEdit/Loader.vue"
 import QuestionCardEditList from "~/modules/deck/components/Question/CardEdit/List.vue"
@@ -6,42 +7,27 @@ import QuestionCardEdit from "~/modules/deck/components/Question/CardEdit/CardEd
 
 import LazyModalDeleteCard from "~/modules/deck/components/Modals/DeleteCard.vue"
 import LazyModalQuestionForm from "~/modules/deck/components/Modals/QuestionForm.vue"
-
-const deck = {
-  id: 1,
-  title: "Typescript",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis sed urna at lacinia. Nunc hendrerit consectetur sapien. Curabitur fermentum libero sed ligula faucibus, laoreet porta ligula convallis.",
-  cards: 24,
-  createdAt: "10/10/10",
-}
-
-const cards = [
-  {
-    id: "12313",
-    question: "Lorem ipsum dolor amet?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis sed urna at lacinia. Nunc hendrerit consectetur sapien.",
-  },
-  {
-    id: "12313123123",
-    question: "Lorem ipsum dolor amet2?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis sed urna at lacinia. Nunc hendrerit consectetur sapien.",
-  },
-  {
-    id: "828282",
-    question: "Lorem ipsum dolor amet3?",
-    answer:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis sed urna at lacinia. Nunc hendrerit consectetur sapien. Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis sed urna at lacinia. Nunc hendrerit consectetur sapien.Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis sed urna at lacinia. Nunc hendrerit consectetur sapien.Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis sed urna at lacinia. Nunc hendrerit consectetur sapien.",
-  },
-]
+import { useDeck } from "~/modules/deck/composables/useDeck"
+import { useDeckEdit } from "~/modules/deck/composables/useDeckEdit"
 
 // Deck
-const title = ref("")
-const description = ref("")
+const route = useRoute()
+const deckId = computed(() => route.params.id as string)
 
-const handleSaveDeckInformations = async () => {}
+const { user } = useUser()
+const {
+  loading: loadingDeck,
+  deck,
+  getDeck,
+} = useDeck({ user, id: deckId.value })
+
+const {
+  loading: loadingEditDeck,
+  title,
+  description,
+  errors,
+  edit,
+} = useDeckEdit({ deck })
 
 // Question
 
@@ -49,53 +35,55 @@ const handleSaveDeckInformations = async () => {}
 // const { loading: loadingEdit, question, answer, edit } = useQuestionEdit(id)
 // const { loading: loadingDelete, remove } = useQuestionRemove(id)
 
-const question = ref("")
-const answer = ref("")
+// const question = ref("")
+// const answer = ref("")
 
-const modal = useModal()
+// const modal = useModal()
 
-const handleAddQuestion = async () => {
-  modal.open(LazyModalQuestionForm, {
-    question: question.value,
-    answer: answer.value,
-    "onUpdate:question": (val: string) => (question.value = val),
-    "onUpdate:answer": (val: string) => (answer.value = val),
-    onSuccess: () => {
-      // CREATE QUESTION LOGIC
-      modal.close()
-      question.value = ""
-      answer.value = ""
-    },
-    onClose: () => modal.close(),
-  })
-}
+// const handleAddQuestion = async () => {
+//   modal.open(LazyModalQuestionForm, {
+//     question: question.value,
+//     answer: answer.value,
+//     "onUpdate:question": (val: string) => (question.value = val),
+//     "onUpdate:answer": (val: string) => (answer.value = val),
+//     onSuccess: () => {
+//       // CREATE QUESTION LOGIC
+//       modal.close()
+//       question.value = ""
+//       answer.value = ""
+//     },
+//     onClose: () => modal.close(),
+//   })
+// }
 
-const handleEditQuestion = async (id: string) => {
-  modal.open(LazyModalQuestionForm, {
-    action: "edit",
-    question: question.value,
-    answer: answer.value,
-    "onUpdate:question": (val: string) => (question.value = val),
-    "onUpdate:answer": (val: string) => (answer.value = val),
-    onSuccess: () => {
-      // EDIT QUESTION LOGIC (id)
-      modal.close()
-      question.value = ""
-      answer.value = ""
-    },
-    onClose: () => modal.close(),
-  })
-}
+// const handleEditQuestion = async (id: string) => {
+//   modal.open(LazyModalQuestionForm, {
+//     action: "edit",
+//     question: question.value,
+//     answer: answer.value,
+//     "onUpdate:question": (val: string) => (question.value = val),
+//     "onUpdate:answer": (val: string) => (answer.value = val),
+//     onSuccess: () => {
+//       // EDIT QUESTION LOGIC (id)
+//       modal.close()
+//       question.value = ""
+//       answer.value = ""
+//     },
+//     onClose: () => modal.close(),
+//   })
+// }
 
-const handleRemoveQuestion = async (id: string) => {
-  modal.open(LazyModalDeleteCard, {
-    onSuccess: () => {
-      // REMOVE QUESTION LOGIC
-      modal.close()
-    },
-    onClose: () => modal.close(),
-  })
-}
+// const handleRemoveQuestion = async (id: string) => {
+//   modal.open(LazyModalDeleteCard, {
+//     onSuccess: () => {
+//       // REMOVE QUESTION LOGIC
+//       modal.close()
+//     },
+//     onClose: () => modal.close(),
+//   })
+// }
+
+onMounted(() => getDeck())
 </script>
 
 <template>
@@ -103,14 +91,19 @@ const handleRemoveQuestion = async (id: string) => {
   @TODO -> add CTA to remove entire deck 
   -->
   <div class="space-y-8 md:space-y-10">
-    <Headline
-      v-model:title="title"
-      v-model:description="description"
-      @save="handleSaveDeckInformations"
-    />
+    <HeadlineLoader :loading="loadingDeck">
+      <Headline
+        v-model:title="title"
+        v-model:description="description"
+        :loading="loadingEditDeck"
+        :errors="errors"
+        @save="edit"
+      />
+    </HeadlineLoader>
+
     <UDivider icon="i-heroicons-academic-cap" />
 
-    <section>
+    <!-- <section>
       <div class="flex items-center gap-2 flex-wrap justify-between mb-4">
         <BaseTitle size="sm" label="Gerencie as perguntas" />
         <UButton
@@ -134,6 +127,6 @@ const handleRemoveQuestion = async (id: string) => {
           />
         </QuestionCardEditList>
       </QuestionCardEditListLoader>
-    </section>
+    </section> -->
   </div>
 </template>

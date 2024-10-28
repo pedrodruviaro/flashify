@@ -1,7 +1,7 @@
 import type { Deck } from "~/modules/deck/entities/Deck/Deck"
-import type { ReadAllRow } from "./types"
+import type { ReadOneRow } from "./types"
 
-export function readAllAdapter(data: ReadAllRow[] | null): Deck[] | null {
+export function readAllAdapter(data: ReadOneRow[] | null): Deck[] | null {
   if (!data) return null
 
   const values = data.map((value) => {
@@ -15,4 +15,16 @@ export function readAllAdapter(data: ReadAllRow[] | null): Deck[] | null {
   })
 
   return values
+}
+
+export function getDeckByIdAdapter(data: ReadOneRow | null): Deck | null {
+  if (!data) return null
+
+  return {
+    id: data.id,
+    title: data.title,
+    description: data.description,
+    userId: data.user_id,
+    createdAt: new Date(data.created_at),
+  }
 }
