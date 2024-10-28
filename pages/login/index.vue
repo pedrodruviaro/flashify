@@ -1,5 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>Login Page</div>
+  <div>
+    <div>Login Page</div>
+    <UButton label="Login com google" />
+  </div>
 </template>
