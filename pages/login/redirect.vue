@@ -1,13 +1,11 @@
 <script setup lang="ts">
-const router = useRouter()
+import Redirect from "~/modules/auth/screns/Redirect/Redirect.vue"
 
-onMounted(() => {
-  setTimeout(() => {
-    router.push("/dashboard")
-  }, 1000)
+useSeoMeta({
+  title: "Redirecionando",
 })
 </script>
 
 <template>
-  <div>Redirect Page</div>
+  <Redirect />
 </template>
