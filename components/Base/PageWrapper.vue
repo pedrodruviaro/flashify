@@ -4,7 +4,7 @@
   <div>
     <slot name="header" />
 
-    <main class="mt-10 lg:mt-14">
+    <main class="my-10 lg:my-14">
       <slot />
     </main>
   </div>

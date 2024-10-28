@@ -1,3 +1,14 @@
+<script setup lang="ts">
+useHead({
+  htmlAttrs: {
+    lang: "pt-BR",
+  },
+  titleTemplate: (chunk) => {
+    return chunk ? `${chunk} | Flashify` : "Flashify"
+  },
+})
+</script>
+
 <template>
   <div>
     <NuxtLayout>

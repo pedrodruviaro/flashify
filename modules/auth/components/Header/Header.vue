@@ -7,7 +7,9 @@ const emits = defineEmits<{
 <template>
   <header class="py-2.5 shadow-sm">
     <UContainer class="flex items-center gap-2 justify-between">
-      <Logo />
+      <NuxtLink to="/dashboard">
+        <Logo />
+      </NuxtLink>
 
       <UButton
         icon="i-heroicons-arrow-left-solid"
