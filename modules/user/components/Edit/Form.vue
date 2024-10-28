@@ -22,9 +22,9 @@ const bio = defineModel<string>("bio")
           placeholder="Estudante"
           v-model="jobtitle"
         />
-        <span class="validation" v-if="props.errors?.jobtitle">{{
+        <ValidationMessage v-if="props.errors?.jobtitle">{{
           props.errors.jobtitle._errors[0]
-        }}</span>
+        }}</ValidationMessage>
       </UFormGroup>
       <UFormGroup label="site" class="w-full">
         <UInput
@@ -34,9 +34,9 @@ const bio = defineModel<string>("bio")
           placeholder="www.johndoe.com"
           v-model="site"
         />
-        <span class="validation" v-if="props.errors?.site">{{
+        <ValidationMessage v-if="props.errors?.site">{{
           props.errors.site._errors[0]
-        }}</span>
+        }}</ValidationMessage>
       </UFormGroup>
     </div>
 
@@ -47,15 +47,9 @@ const bio = defineModel<string>("bio")
         placeholder="Uma pequena bio"
         :rows="8"
         v-model="bio"
-      /><span class="validation" v-if="props.errors?.bio">{{
+      /><ValidationMessage v-if="props.errors?.bio">{{
         props.errors.bio._errors[0]
-      }}</span>
+      }}</ValidationMessage>
     </UFormGroup>
   </form>
 </template>
-
-<style scoped>
-.validation {
-  @apply text-red-500 text-sm;
-}
-</style>

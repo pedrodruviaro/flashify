@@ -7,39 +7,39 @@ import DeckListLoader from "~/modules/dashboard/components/Deck/Loader.vue"
 import DeckListEmpty from "~/modules/dashboard/components/Deck/Empty.vue"
 import DeckList from "~/modules/dashboard/components/Deck/List.vue"
 import DeckCard from "~/modules/dashboard/components/Deck/Card.vue"
-import LazyModalNewDeckForm from "~/modules/dashboard/components/Modals/NewDeckForm.vue"
+import LazyNewDeck from "~/modules/dashboard/components/Modals/NewDeck.vue"
 import { useDecksList } from "~/modules/deck/composables/useDecksList"
+import { useDeckCreate } from "~/modules/deck/composables/useDeckCreate"
 
 const router = useRouter()
 
 const search = ref("")
 
 const { user, loading: loadingUser } = useUser()
-// const { title, description, loading: loadingCreate, create } = useDeckCreate()
+
+const {
+  title,
+  description,
+  errors,
+  loading: loadingCreate,
+  safeParse,
+  create,
+} = useDeckCreate({ user })
+
 const { loading: loadingDecks, decks } = useDecksList({ user }) // filtro?
 
 const hasDecks = computed(() => decks.value?.length !== 0)
 
-const title = ref("")
-const description = ref("")
+const isModalCreateOpen = ref(false)
+const handleNewDeck = async () => {
+  const isValid = safeParse().success
+  if (!isValid) return
 
-const modal = useModal()
-
-const handleNewDeck = () => {
-  modal.open(LazyModalNewDeckForm, {
-    title: title.value,
-    description: description.value,
-    "onUpdate:title": (val: string) => (title.value = val),
-    "onUpdate:description": (val: string) => (description.value = val),
-    onSuccess: () => {
-      // CREATE AND REDIRECT LOGIC
-    },
-    onClose: () => {
-      modal.close()
-      title.value = ""
-      description.value = ""
-    },
-  })
+  const response = await create()
+  if (response) {
+    isModalCreateOpen.value = false
+    router.push(`/dashboard/decks/${response.id}`)
+  }
 }
 </script>
 
@@ -55,7 +55,7 @@ const handleNewDeck = () => {
     </HeadlineLoader>
 
     <ActionBarLoader :loading="false">
-      <ActionBar v-model:search="search" @new-deck="handleNewDeck" />
+      <ActionBar v-model:search="search" @new-deck="isModalCreateOpen = true" />
     </ActionBarLoader>
 
     <DeckListLoader :loading="loadingDecks">
@@ -72,7 +72,16 @@ const handleNewDeck = () => {
         />
       </DeckList>
 
-      <DeckListEmpty v-else @new-deck="handleNewDeck" />
+      <DeckListEmpty v-else @new-deck="isModalCreateOpen = true" />
     </DeckListLoader>
+
+    <LazyNewDeck
+      v-model:is-open="isModalCreateOpen"
+      v-model:title="title"
+      v-model:description="description"
+      :loading="loadingCreate"
+      :errors="errors"
+      @create="handleNewDeck"
+    />
   </div>
 </template>
