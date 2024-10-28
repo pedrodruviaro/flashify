@@ -1,4 +1,5 @@
 import AuthService from "~/modules/auth/services/services"
+import UserService from "~/modules/user/services/services"
 import type { Database } from "~/supabase/schema"
 
 export function useServices() {
@@ -8,5 +9,6 @@ export function useServices() {
 
   return {
     auth: AuthService(supabase, { redirectUrl }),
+    user: UserService(supabase),
   }
 }

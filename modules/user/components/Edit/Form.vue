@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import type { User } from "~/modules/user/entities/User/User"
+import type { ZodFormattedError } from "zod"
+
+const props = defineProps<{
+  errors?: ZodFormattedError<User>
+}>()
+
 const jobtitle = defineModel<string>("jobtitle")
-const website = defineModel<string>("website")
+const site = defineModel<string>("site")
 const bio = defineModel<string>("bio")
 </script>
 
@@ -15,15 +22,21 @@ const bio = defineModel<string>("bio")
           placeholder="Estudante"
           v-model="jobtitle"
         />
+        <span class="validation" v-if="props.errors?.jobtitle">{{
+          props.errors.jobtitle._errors[0]
+        }}</span>
       </UFormGroup>
-      <UFormGroup label="Website" class="w-full">
+      <UFormGroup label="site" class="w-full">
         <UInput
           class="w-full"
           color="primary"
           variant="outline"
           placeholder="www.johndoe.com"
-          v-model="website"
+          v-model="site"
         />
+        <span class="validation" v-if="props.errors?.site">{{
+          props.errors.site._errors[0]
+        }}</span>
       </UFormGroup>
     </div>
 
@@ -34,7 +47,15 @@ const bio = defineModel<string>("bio")
         placeholder="Uma pequena bio"
         :rows="8"
         v-model="bio"
-      />
+      /><span class="validation" v-if="props.errors?.bio">{{
+        props.errors.bio._errors[0]
+      }}</span>
     </UFormGroup>
   </form>
 </template>
+
+<style scoped>
+.validation {
+  @apply text-red-500 text-sm;
+}
+</style>

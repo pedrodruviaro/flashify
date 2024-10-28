@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import EditHeadline from "~/modules/user/components/Edit/Headline.vue"
 import EditForm from "~/modules/user/components/Edit/Form.vue"
+import { useProfileEdit } from "~/modules/user/composables/useProfileEdit"
 
-const jobtitle = ref("")
-const website = ref("")
-const bio = ref("")
+const { user } = useUser()
 
-const handleSaveEdit = () => {
-  console.log("* Save")
+const { jobtitle, site, bio, loading, errors, safeParse, update } =
+  useProfileEdit({
+    user,
+  })
+
+const handleSaveEdit = async () => {
+  const isValid = safeParse().success
+  if (!isValid) return
+
+  await update()
 }
 </script>
 
@@ -15,17 +22,15 @@ const handleSaveEdit = () => {
   <div class="space-y-6">
     <BaseTitle as="h1" size="lg" label="Edite o seu perfil" />
 
-    <EditHeadline
-      avatar-url="https://avatars.githubusercontent.com/u/739984?v=4"
-      name="John Doe"
-    />
+    <EditHeadline v-if="user" :avatarUrl="user?.avatarUrl" :name="user?.name" />
 
     <BaseTitle label="Informações adicionais" size="sm" />
 
     <EditForm
       v-model:jobtitle="jobtitle"
-      v-model:website="website"
+      v-model:site="site"
       v-model:bio="bio"
+      :errors="errors"
     />
 
     <UButton
@@ -33,6 +38,7 @@ const handleSaveEdit = () => {
       icon="i-heroicons-pencil-square"
       trailing
       @click="handleSaveEdit"
+      :loading
     />
   </div>
 </template>

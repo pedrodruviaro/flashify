@@ -41,7 +41,7 @@ const router = useRouter()
 
 const search = ref("")
 
-// const { user } = useUser()
+const { user, loading: loadingUser } = useUser()
 // const { title, description, loading: loadingCreate, create } = useDeckCreate()
 // const { loading: loadingDecks, decks } = useDeckList() // filtro?
 
@@ -70,10 +70,11 @@ const handleNewDeck = () => {
 
 <template>
   <div class="space-y-8 lg:space-y-10">
-    <HeadlineLoader :loading="false">
+    <HeadlineLoader :loading="loadingUser">
       <Headline
-        avatar-url="https://avatars.githubusercontent.com/u/739984?v=4"
-        username="John Doe"
+        v-if="user"
+        :avatarUrl="user?.avatarUrl"
+        :username="user?.name"
         @edit-profile="router.push('/dashboard/profile/edit')"
       />
     </HeadlineLoader>
