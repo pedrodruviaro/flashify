@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { dateFormate } from "~/helpers/dateFormat"
+
 const props = defineProps<{
   id: string
   title: string
-  createdAt: Date | string
+  createdAt: Date
   description: string
 }>()
 
@@ -10,6 +12,8 @@ const emits = defineEmits<{
   (e: "edit", id: string): void
   (e: "play", id: string): void
 }>()
+
+const formatedDate = computed(() => dateFormate(props.createdAt))
 </script>
 
 <template>
@@ -23,7 +27,7 @@ const emits = defineEmits<{
       <div class="flex flex-wrap justify-between gap-2 items-center">
         <BaseTitle as="h3" size="xs" light :label="props.title" />
         <UBadge color="white" variant="solid">
-          Criado em {{ props.createdAt }}
+          Criado em {{ formatedDate }}
         </UBadge>
       </div>
     </template>

@@ -1,5 +1,6 @@
-import AuthService from "~/modules/auth/services/services"
-import UserService from "~/modules/user/services/services"
+import AuthServices from "~/modules/auth/services/services"
+import UserServices from "~/modules/user/services/services"
+import DeckServices from "~/modules/deck/services/services"
 import type { Database } from "~/supabase/schema"
 
 export function useServices() {
@@ -8,7 +9,8 @@ export function useServices() {
   const redirectUrl = `${appConfig.public.siteUrl}/login/redirect`
 
   return {
-    auth: AuthService(supabase, { redirectUrl }),
-    user: UserService(supabase),
+    auth: AuthServices(supabase, { redirectUrl }),
+    user: UserServices(supabase),
+    deck: DeckServices(supabase),
   }
 }

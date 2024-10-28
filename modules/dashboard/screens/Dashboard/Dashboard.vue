@@ -4,38 +4,11 @@ import Headline from "~/modules/dashboard/components/Headline/Headline.vue"
 import ActionBarLoader from "~/modules/dashboard/components/ActionBar/Loader.vue"
 import ActionBar from "~/modules/dashboard/components/ActionBar/ActionBar.vue"
 import DeckListLoader from "~/modules/dashboard/components/Deck/Loader.vue"
+import DeckListEmpty from "~/modules/dashboard/components/Deck/Empty.vue"
 import DeckList from "~/modules/dashboard/components/Deck/List.vue"
 import DeckCard from "~/modules/dashboard/components/Deck/Card.vue"
 import LazyModalNewDeckForm from "~/modules/dashboard/components/Modals/NewDeckForm.vue"
-
-const decks = ref([
-  {
-    id: "1",
-    title: "Typescript",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis sed urna at lacinia. Nunc hendrerit consectetur sapien. Curabitur fermentum libero sed ligula faucibus, laoreet porta ligula convallis.",
-    cards: 24,
-    createdAt: "10/10/10",
-  },
-
-  {
-    id: "2",
-    title: "TailwindCSS",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis sed urna at lacinia. Nunc hendrerit consectetur sapien. Curabitur fermentum libero sed ligula faucibus, laoreet porta ligula convallis.",
-    cards: 20,
-    createdAt: "20/10/10",
-  },
-
-  {
-    id: "3",
-    title: "TailwindCSS",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In facilisis sed urna at lacinia. Nunc hendrerit consectetur sapien. Curabitur fermentum libero sed ligula faucibus, laoreet porta ligula convallis.",
-    cards: 20,
-    createdAt: "20/10/10",
-  },
-])
+import { useDecksList } from "~/modules/deck/composables/useDecksList"
 
 const router = useRouter()
 
@@ -43,7 +16,9 @@ const search = ref("")
 
 const { user, loading: loadingUser } = useUser()
 // const { title, description, loading: loadingCreate, create } = useDeckCreate()
-// const { loading: loadingDecks, decks } = useDeckList() // filtro?
+const { loading: loadingDecks, decks } = useDecksList({ user }) // filtro?
+
+const hasDecks = computed(() => decks.value?.length !== 0)
 
 const title = ref("")
 const description = ref("")
@@ -83,19 +58,21 @@ const handleNewDeck = () => {
       <ActionBar v-model:search="search" @new-deck="handleNewDeck" />
     </ActionBarLoader>
 
-    <DeckListLoader :loading="false">
-      <DeckList>
+    <DeckListLoader :loading="loadingDecks">
+      <DeckList v-if="hasDecks">
         <DeckCard
           v-for="deck in decks"
           :key="deck.id"
           :id="deck.id"
           :title="deck.title"
           :description="deck.description"
-          :created-at="deck.createdAt"
+          :createdAt="deck.createdAt"
           @edit="router.push(`/dashboard/decks/${deck.id}`)"
           @play="router.push(`/dashboard/decks/${deck.id}`)"
         />
       </DeckList>
+
+      <DeckListEmpty v-else @new-deck="handleNewDeck" />
     </DeckListLoader>
   </div>
 </template>
