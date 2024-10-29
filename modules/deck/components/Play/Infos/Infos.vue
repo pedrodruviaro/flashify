@@ -25,6 +25,10 @@ const answeredLabel = computed(() => {
 const rightAnswersLabel = computed(() => {
   return props.rightAnswers === 1 ? "Acerto" : "Acertos"
 })
+
+const progress = computed(() => {
+  return (100 * props.answered) / props.numOfCards
+})
 </script>
 
 <template>
@@ -52,6 +56,9 @@ const rightAnswersLabel = computed(() => {
         <UBadge color="emerald" size="lg"
           >{{ props.rightAnswers }} {{ rightAnswersLabel }}</UBadge
         >
+
+        <UProgress :value="progress" indicator class="mt-2" />
+        <span class="text-xs text-stone-500">Respondido</span>
       </div>
     </UCard>
   </section>
