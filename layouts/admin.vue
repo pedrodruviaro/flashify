@@ -10,7 +10,7 @@ const handleSidebarState = (state: boolean) => {
   isSidebarOpen.value = state
 }
 
-const { loading: loadingUser } = useGetMe()
+const { loading: loadingUser, user } = useGetMe()
 </script>
 
 <template>
@@ -22,7 +22,11 @@ const { loading: loadingUser } = useGetMe()
     </template>
 
     <USlideover v-model="isSidebarOpen">
-      <SidebarContent @close-sidebar="handleSidebarState(false)" />
+      <SidebarContent
+        v-if="user"
+        :avatarUrl="user?.avatarUrl"
+        @close-sidebar="handleSidebarState(false)"
+      />
     </USlideover>
 
     <UContainer>
@@ -36,7 +40,7 @@ const { loading: loadingUser } = useGetMe()
   </BasePageWrapper>
 </template>
 
-<style>
+<style scoped>
 .v-enter-active,
 .v-leave-active {
   transition: 0.3s ease;
