@@ -51,6 +51,13 @@ const question = ref("")
 const flashcardIdToEdit = ref()
 const modalAction = ref<ModalTypeAction>("create")
 
+watchEffect(() => {
+  if (isModalOpen.value === false) {
+    answer.value = ""
+    question.value = ""
+  }
+})
+
 const { loading: loadingCreate, create } = useFlashcardCreate({ deck })
 const { loading: loadingEdit, edit: editFlashcard } = useFlashcardEdit()
 
@@ -98,6 +105,7 @@ const handleEditQuestion = async (flashcard: Flashcard) => {
   isModalOpen.value = true
   answer.value = flashcard.answer
   question.value = flashcard.question
+
   flashcardIdToEdit.value = flashcard.id
 }
 
@@ -125,7 +133,6 @@ onMounted(() => getDeck())
 <template>
   <!-- 
   @TODO -> add CTA to remove entire deck 
-  @TODO -> adicionar validação ao form de criação
   -->
   <div class="space-y-10 md:space-y-16">
     <HeadlineLoader :loading="loadingDeck">
@@ -165,7 +172,7 @@ onMounted(() => getDeck())
       v-model:question="question"
       v-model:answer="answer"
       :action="modalAction"
-      :loading="loadingCreate || loadingEditDeck"
+      :loading="loadingCreate || loadingEdit"
       @submited="handleQuestionForm"
     />
   </div>

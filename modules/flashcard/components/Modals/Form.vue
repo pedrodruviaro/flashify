@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { z } from "zod"
+
+const schema = z.object({
+  question: z.string().min(2, "Insira sua pergunta completa"),
+  answer: z.string().min(2, "Uma pergunta precisa de uma resposta"),
+})
+
 export type ModalTypeAction = "create" | "edit"
 
 const props = withDefaults(
@@ -17,6 +24,11 @@ const question = defineModel<string>("question")
 const answer = defineModel<string>("answer")
 const open = defineModel<boolean>("open")
 
+const localState = reactive({
+  question: question.value,
+  answer: answer.value,
+})
+
 const modalTitle = computed(() => {
   return props.action === "create" ? "Crie sua pergunta" : "Edite sua pergunta"
 })
@@ -25,7 +37,21 @@ const buttonLabel = computed(() => {
   return props.action === "create" ? "Criar" : "Editar"
 })
 
-const handleSubmit = (event: Event) => emits("submited")
+const handleSubmit = () => {
+  question.value = localState.question
+  answer.value = localState.answer
+  emits("submited")
+}
+
+watchEffect(() => {
+  localState.question = question.value
+  localState.answer = answer.value
+
+  if (open.value === false) {
+    localState.answer = ""
+    localState.question = ""
+  }
+})
 </script>
 
 <template>
@@ -44,13 +70,23 @@ const handleSubmit = (event: Event) => emits("submited")
           </div>
         </template>
 
-        <form @submit.prevent="handleSubmit" class="space-y-2">
-          <UFormGroup label="Pergunta" required>
-            <UTextarea :rows="3" v-model="question" tabindex="0" autofocus />
+        <UForm
+          :schema="schema"
+          :state="localState"
+          @submit.prevent="handleSubmit"
+          class="space-y-2"
+        >
+          <UFormGroup label="Pergunta" name="question" required>
+            <UTextarea
+              :rows="3"
+              v-model="localState.question"
+              tabindex="0"
+              autofocus
+            />
           </UFormGroup>
 
-          <UFormGroup label="Resposta" required>
-            <UTextarea :rows="10" v-model="answer" />
+          <UFormGroup label="Resposta" name="answer" required>
+            <UTextarea :rows="10" v-model="localState.answer" />
           </UFormGroup>
 
           <UButton
@@ -58,7 +94,7 @@ const handleSubmit = (event: Event) => emits("submited")
             type="submit"
             :loading="props.loading"
           />
-        </form>
+        </UForm>
       </UCard>
     </UModal>
   </Teleport>
