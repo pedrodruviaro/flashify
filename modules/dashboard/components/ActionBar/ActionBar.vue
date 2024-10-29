@@ -26,6 +26,7 @@ const search = defineModel<string>("search")
           color="white"
           placeholder="Busque por um título..."
           class="flex-0"
+          type="search"
           :trailing="false"
           v-model="search"
         />

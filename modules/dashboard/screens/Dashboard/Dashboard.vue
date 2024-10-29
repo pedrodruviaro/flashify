@@ -10,7 +10,6 @@ import DeckCard from "~/modules/dashboard/components/Deck/Card.vue"
 import LazyNewDeck from "~/modules/dashboard/components/Modals/NewDeck.vue"
 import { useDecksList } from "~/modules/deck/composables/useDecksList"
 import { useDeckCreate } from "~/modules/deck/composables/useDeckCreate"
-import type { Deck } from "~/modules/deck/entities/Deck/Deck"
 
 const router = useRouter()
 
@@ -26,7 +25,7 @@ const {
   create,
 } = useDeckCreate({ user })
 
-const { loading: loadingDecks, decks } = useDecksList({ user }) // filtro?
+const { loading: loadingDecks, decks } = useDecksList({ user })
 
 const filteredDecks = computed(() => {
   return search.value !== ""
@@ -56,6 +55,10 @@ const handleNewDeck = async () => {
         @edit-profile="router.push('/dashboard/profile/edit')"
       />
     </HeadlineLoader>
+
+    <pre class="text-xs">
+      {{ filteredDecks }}
+    </pre>
 
     <ActionBarLoader :loading="false">
       <ActionBar v-model:search="search" @new-deck="isModalCreateOpen = true" />
