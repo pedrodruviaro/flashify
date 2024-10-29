@@ -9,11 +9,13 @@ import FlashcardEditCard from "~/modules/flashcard/components/Edit/Card.vue"
 import FlashcardEditListEmpty from "~/modules/flashcard/components/Edit/Empty.vue"
 import LazyFlashcardModalDelete from "~/modules/flashcard/components/Modals/Delete.vue"
 import LazyFlashcardModalForm from "~/modules/flashcard/components/Modals/Form.vue"
+import LazyModalDeckRemove from "~/modules/deck/components/Modals/DeckRemove.vue"
 import { useDeck } from "~/modules/deck/composables/useDeck"
 import { useDeckEdit } from "~/modules/deck/composables/useDeckEdit"
 import { useFlashcardCreate } from "~/modules/flashcard/composables/useFlashcardCreate"
 import { useFlashcardRemove } from "~/modules/flashcard/composables/useFlaschardRemove"
 import { useFlashcardEdit } from "~/modules/flashcard/composables/useFlashcardEdit"
+import { useDeckRemove } from "~/modules/deck/composables/useDeckRemove"
 import type { ModalTypeAction } from "~/modules/flashcard/components/Modals/Form.vue"
 import type { Flashcard } from "~/modules/flashcard/entities/Flashcard/Flashcard"
 
@@ -22,6 +24,8 @@ const route = useRoute()
 const deckId = computed(() => route.params.id as string)
 
 const { user } = useUser()
+
+const isDeleteDeckModalOpen = ref(false)
 
 const {
   loading: loadingDeck,
@@ -43,6 +47,10 @@ const {
   edit,
 } = useDeckEdit({ deck })
 
+const { loading: laodingRemoveDeck, remove: removeDeck } = useDeckRemove({
+  deck,
+})
+
 // Flashcards
 const isModalOpen = ref(false)
 
@@ -55,6 +63,8 @@ watchEffect(() => {
   if (isModalOpen.value === false) {
     answer.value = ""
     question.value = ""
+    flashcardIdToEdit.value = undefined
+    modalAction.value = "create"
   }
 })
 
@@ -131,9 +141,6 @@ onMounted(() => getDeck())
 </script>
 
 <template>
-  <!-- 
-  @TODO -> add CTA to remove entire deck 
-  -->
   <div class="space-y-10 md:space-y-16">
     <HeadlineLoader :loading="loadingDeck">
       <Headline
@@ -167,6 +174,18 @@ onMounted(() => getDeck())
       </FlashcardEditListLoader>
     </section>
 
+    <UCard>
+      <div class="flex flex-wrap gap-2 items-center justify-between">
+        <BaseTitle light size="sm" label="Zona perigosa" />
+        <UButton
+          color="red"
+          label="Apagar esse Deck"
+          icon="i-heroicons-trash"
+          @click="isDeleteDeckModalOpen = true"
+        />
+      </div>
+    </UCard>
+
     <LazyFlashcardModalForm
       v-model:open="isModalOpen"
       v-model:question="question"
@@ -174,6 +193,12 @@ onMounted(() => getDeck())
       :action="modalAction"
       :loading="loadingCreate || loadingEdit"
       @submited="handleQuestionForm"
+    />
+
+    <LazyModalDeckRemove
+      v-model:isOpen="isDeleteDeckModalOpen"
+      :loading="laodingRemoveDeck"
+      @confirm="removeDeck"
     />
   </div>
 </template>

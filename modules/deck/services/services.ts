@@ -35,7 +35,7 @@ export default (client: SupabaseClient<Database>) => ({
     const response = await client
       .from("decks")
       .select("*, flashcards(*)")
-      .match({ id: id, user_id: userId })
+      .match({ id, user_id: userId })
       .order("created_at", { referencedTable: "flashcards", ascending: false })
       .single()
 
@@ -50,6 +50,13 @@ export default (client: SupabaseClient<Database>) => ({
         description,
       })
       .eq("id", id)
+
+    return { id }
+  },
+
+  async remove(id: string) {
+    await client.from("flashcards").delete().eq("deck_id", id)
+    await client.from("decks").delete().eq("id", id)
 
     return { id }
   },

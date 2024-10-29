@@ -1,9 +1,9 @@
 import { z } from "zod"
 import type { ZodFormattedError } from "zod"
-import type { Deck } from "~/modules/deck/entities/Deck/Deck"
+import type { Deck, DeckVirtual } from "~/modules/deck/entities/Deck/Deck"
 
 export interface UseDeckEditOptions {
-  deck: Ref<Deck | undefined>
+  deck: Ref<DeckVirtual | undefined>
 }
 
 const schema = z.object({

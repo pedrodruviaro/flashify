@@ -19,3 +19,10 @@ useHead({
     <UNotifications />
   </div>
 </template>
+
+<style>
+body,
+html {
+  @apply bg-stone-50;
+}
+</style>
