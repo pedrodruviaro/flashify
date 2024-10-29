@@ -6,15 +6,20 @@ import LazyModalLogout from "~/modules/auth/components/Modals/Logout.vue"
 import { useGetMe } from "~/modules/user/composables/useGetMe"
 import { useAuthActions } from "~/modules/auth/composables/useAuthActions"
 
+const router = useRouter()
 const isSidebarOpen = ref(false)
 
 const handleSidebarState = (state: boolean) => {
   isSidebarOpen.value = state
 }
 
+const handleNavigate = (path: string) => {
+  handleSidebarState(false)
+  router.push(path)
+}
+
 const { loading: loadingUser, user } = useGetMe()
 
-const router = useRouter()
 const modal = useModal()
 const toast = useToast()
 const { logout } = useAuthActions()
@@ -51,6 +56,8 @@ const handleLogout = async () => {
         :avatarUrl="user?.avatarUrl"
         @close-sidebar="handleSidebarState(false)"
         @logout="handleLogout"
+        @navigate-to-dashboard="handleNavigate('/dashboard')"
+        @navigate-to-profile-edit="handleNavigate('/dashboard/profile/edit')"
       />
     </USlideover>
 

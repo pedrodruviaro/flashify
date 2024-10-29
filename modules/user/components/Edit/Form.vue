@@ -13,7 +13,7 @@ const bio = defineModel<string>("bio")
 
 <template>
   <form>
-    <div class="flex gap-2 mb-2 w-full">
+    <div class="flex flex-col sm:flex-row gap-2 mb-2 w-full">
       <UFormGroup label="Cargo" class="w-full">
         <UInput
           class="w-full"

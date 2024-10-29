@@ -62,6 +62,13 @@ export function useProfileEdit({ user }: UseProfileEditOptions) {
       })
 
       errors.value = undefined
+
+      // Update global user state
+      if (user.value) {
+        user.value.jobtitle = jobtitle.value
+        user.value.bio = bio.value
+        user.value.site = site.value
+      }
     } catch (error) {
       logger(error)
 

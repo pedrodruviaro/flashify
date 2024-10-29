@@ -50,8 +50,9 @@ const handleNewDeck = async () => {
     <HeadlineLoader :loading="loadingUser">
       <Headline
         v-if="user"
-        :avatarUrl="user?.avatarUrl"
-        :username="user?.name"
+        :avatarUrl="user.avatarUrl"
+        :username="user.name"
+        :jobtitle="user.jobtitle"
         @edit-profile="router.push('/dashboard/profile/edit')"
       />
     </HeadlineLoader>

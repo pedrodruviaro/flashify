@@ -4,22 +4,11 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits<{
+  (e: "navigate-to-dashboard"): void
+  (e: "navigate-to-profile-edit"): void
   (e: "close-sidebar"): void
   (e: "logout"): void
 }>()
-
-const links = [
-  {
-    label: "Dashboard",
-    icon: "i-heroicons-home",
-    to: "/dashboard",
-  },
-  {
-    label: "Editar perfil",
-    icon: "i-heroicons-user",
-    to: "/dashboard/profile/edit",
-  },
-]
 </script>
 
 <template>
@@ -40,15 +29,22 @@ const links = [
       </div>
     </template>
 
-    <UVerticalNavigation :links="links">
-      <template #default="{ link }">
-        <span
-          @click="emits('close-sidebar')"
-          class="group-hover:text-primary relative"
-          >{{ link.label }}</span
-        >
-      </template>
-    </UVerticalNavigation>
+    <div class="grid gap-2">
+      <BaseTitle size="xs" label="Menu" light class="mb-1" />
+      <UButton
+        color="white"
+        label="Dashboard"
+        icon="i-heroicons-home"
+        @click="emits('navigate-to-dashboard')"
+      />
+
+      <UButton
+        color="white"
+        label="Editar Perfil"
+        icon="i-heroicons-user"
+        @click="emits('navigate-to-profile-edit')"
+      />
+    </div>
 
     <template #footer>
       <UButton
