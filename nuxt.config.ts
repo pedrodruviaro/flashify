@@ -2,7 +2,12 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@nuxtjs/supabase", "@formkit/auto-animate/nuxt"],
+  modules: [
+    "@nuxt/ui",
+    "@nuxtjs/supabase",
+    "@formkit/auto-animate/nuxt",
+    "@nuxtjs/seo",
+  ],
   colorMode: {
     preference: "light",
     fallback: "light",
@@ -22,5 +27,14 @@ export default defineNuxtConfig({
       callback: "/login/redirect",
       exclude: ["/"],
     },
+  },
+  site: {
+    url: process.env.SITE_URL,
+    name: "Flashify",
+    description: "Crie flashcard e estude de forma divertida",
+    defaultLocale: "pt-BR",
+  },
+  robots: {
+    disallow: ["/dashboard", "/play"],
   },
 })
