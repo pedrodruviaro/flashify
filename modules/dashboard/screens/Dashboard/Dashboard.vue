@@ -28,8 +28,10 @@ const {
 const { loading: loadingDecks, decks } = useDecksList({ user })
 
 const filteredDecks = computed(() => {
+  const searchQuery = search.value.trim().toLowerCase()
+
   return search.value !== ""
-    ? decks.value?.filter((d) => d.title.toLowerCase().includes(search.value))
+    ? decks.value?.filter((d) => d.title.toLowerCase().includes(searchQuery))
     : decks.value
 })
 
@@ -55,6 +57,8 @@ const handleNewDeck = async () => {
         @edit-profile="router.push('/dashboard/profile/edit')"
       />
     </HeadlineLoader>
+
+    <p class="text-red-400 text-xs">{{ search }}</p>
 
     <pre class="text-xs">
       {{ filteredDecks }}
