@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import HeadlineLoader from "~/modules/deck/components/Headline/Loader.vue"
 import Headline from "~/modules/deck/components/Headline/Headline.vue"
+import ActionBarLoader from "~/modules/deck/components/Edit/ActionBar/Loader.vue"
+import ActionBar from "~/modules/deck/components/Edit/ActionBar/ActionBar.vue"
 import FlashcardEditListLoader from "~/modules/flashcard/components/Edit/Loader.vue"
 import FlashcardEditList from "~/modules/flashcard/components/Edit/List.vue"
 import FlashcardEditCard from "~/modules/flashcard/components/Edit/Card.vue"
@@ -137,16 +139,9 @@ onMounted(() => getDeck())
     </HeadlineLoader>
 
     <section>
-      <!-- ADD LOADER E COMPONENTIZAR -->
-      <div class="flex items-center gap-2 flex-wrap justify-between mb-4">
-        <BaseTitle size="sm" label="Gerencie as perguntas" />
-        <UButton
-          label="Adicionar pergunta"
-          icon="i-heroicons-plus"
-          trailing
-          @click="isModalOpen = true"
-        />
-      </div>
+      <ActionBarLoader :loading="loadingDeck">
+        <ActionBar @new-flashcard="isModalOpen = true" />
+      </ActionBarLoader>
 
       <FlashcardEditListLoader :loading="loadingDeck">
         <FlashcardEditList v-if="hasFlashcards" v-auto-animate>
