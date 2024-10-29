@@ -1,8 +1,12 @@
 <script setup lang="ts">
-const props = defineProps<{
-  question: string
-  answer: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    question: string
+    answer: string
+    hasActions?: boolean
+  }>(),
+  { hasActions: true }
+)
 
 const emits = defineEmits<{
   (e: "correct"): void
@@ -22,6 +26,7 @@ const emits = defineEmits<{
             square
             icon="i-heroicons-x-mark-20-solid"
             @click="emits('close')"
+            tabindex="0"
           />
         </div>
         <BaseTitle size="xs" light :label="props.question" />
@@ -30,7 +35,7 @@ const emits = defineEmits<{
         <p class="text-lg text-stone-700">{{ props.answer }}</p>
       </template>
 
-      <template #footer>
+      <template #footer v-if="props.hasActions">
         <div class="flex items-center gap-4 flex-wrap">
           <UButton
             color="red"

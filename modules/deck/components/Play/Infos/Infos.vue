@@ -13,6 +13,18 @@ const props = defineProps<{
 const formatedDate = computed(() => {
   return dateFormate(props.date)
 })
+
+const numOfCardsLabel = computed(() => {
+  return props.numOfCards === 1 ? "Pergunta" : "Perguntas"
+})
+
+const answeredLabel = computed(() => {
+  return props.answered === 1 ? "Respondida" : "Respondidas"
+})
+
+const rightAnswersLabel = computed(() => {
+  return props.rightAnswers === 1 ? "Acerto" : "Acertos"
+})
 </script>
 
 <template>
@@ -32,13 +44,13 @@ const formatedDate = computed(() => {
     <UCard>
       <div class="grid gap-2">
         <UBadge color="white" size="lg"
-          >{{ props.numOfCards }} Perguntas</UBadge
+          >{{ props.numOfCards }} {{ numOfCardsLabel }}</UBadge
         >
         <UBadge color="black" size="lg"
-          >{{ props.answered }} Respondidas</UBadge
+          >{{ props.answered }} {{ answeredLabel }}</UBadge
         >
         <UBadge color="emerald" size="lg"
-          >{{ props.rightAnswers }} Acerto</UBadge
+          >{{ props.rightAnswers }} {{ rightAnswersLabel }}</UBadge
         >
       </div>
     </UCard>
