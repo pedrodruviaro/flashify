@@ -8,11 +8,6 @@ export interface Deck {
   createdAt: Date
 }
 
-export interface DeckVirtual {
-  id: string
-  title: string
-  description: string
-  userId: string
-  createdAt: Date
+export type DeckVirtual = Deck & {
   flashcards: Flashcard[]
 }
