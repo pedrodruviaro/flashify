@@ -9,5 +9,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>Redirecionando...</div>
+  <div class="grid place-items-center py-20 lg:mt-36">
+    <Logo class="mb-3" />
+    <BaseTitle
+      center
+      size="lg"
+      light
+      label="Redirecionando..."
+      class="animate-pulse"
+    />
+  </div>
 </template>
