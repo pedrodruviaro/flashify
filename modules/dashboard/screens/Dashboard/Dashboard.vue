@@ -10,6 +10,7 @@ import DeckCard from "~/modules/dashboard/components/Deck/Card.vue"
 import LazyNewDeck from "~/modules/dashboard/components/Modals/NewDeck.vue"
 import { useDecksList } from "~/modules/deck/composables/useDecksList"
 import { useDeckCreate } from "~/modules/deck/composables/useDeckCreate"
+import type { Deck } from "~/modules/deck/entities/Deck/Deck"
 
 const router = useRouter()
 
@@ -27,7 +28,11 @@ const {
 
 const { loading: loadingDecks, decks } = useDecksList({ user }) // filtro?
 
-const hasDecks = computed(() => decks.value?.length !== 0)
+const filteredDecks = computed(() => {
+  return search.value !== ""
+    ? decks.value?.filter((d) => d.title.toLowerCase().includes(search.value))
+    : decks.value
+})
 
 const isModalCreateOpen = ref(false)
 
@@ -56,9 +61,9 @@ const handleNewDeck = async () => {
     </ActionBarLoader>
 
     <DeckListLoader :loading="loadingDecks">
-      <DeckList v-if="hasDecks">
+      <DeckList v-if="decks?.length !== 0" v-auto-animate>
         <DeckCard
-          v-for="deck in decks"
+          v-for="deck in filteredDecks"
           :key="deck.id"
           :id="deck.id"
           :title="deck.title"
@@ -70,6 +75,9 @@ const handleNewDeck = async () => {
       </DeckList>
 
       <DeckListEmpty v-else @new-deck="isModalCreateOpen = true" />
+      <p class="text-center col-span-2" v-if="filteredDecks?.length === 0">
+        Sem resultados para a busca
+      </p>
     </DeckListLoader>
 
     <LazyNewDeck

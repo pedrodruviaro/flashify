@@ -22,13 +22,14 @@ const formatedDate = computed(() => dateFormate(props.createdAt))
       ring: '',
       divide: 'divide-y divide-gray-100 dark:divide-gray-800',
     }"
+    class="grid grid-rows-[max-content_1fr_max-content]"
   >
     <template #header>
-      <div class="flex flex-wrap justify-between gap-2 items-center">
-        <BaseTitle as="h3" size="xs" light :label="props.title" />
+      <div>
         <UBadge color="white" variant="solid">
           Criado em {{ formatedDate }}
         </UBadge>
+        <BaseTitle as="h3" size="xs" light :label="props.title" class="mt-2" />
       </div>
     </template>
 
