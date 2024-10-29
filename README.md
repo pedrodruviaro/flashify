@@ -1,75 +1,21 @@
-# Nuxt Minimal Starter
+# Flashify
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+- [Ver ao vivo](https://flashify.pedroruviaro.com.br/)
 
-## Setup
+## Concepção
 
-Make sure to install dependencies:
+## Motivo
 
-```bash
-# npm
-npm install
+## Stack
 
-# pnpm
-pnpm install
+O projeto usa Nuxt, Supabase e NuxtUI como módulos principais.
 
-# yarn
-yarn install
+## Telas
 
-# bun
-bun install
-```
+---
 
-## Development Server
+Dúvidas? Fale comigo e vamos conversar :)
 
-Start the development server on `http://localhost:3000`:
+[Linkedin](https://www.linkedin.com/in/pedroruviaro/)
 
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+[pedroruviaro.com.br](https://pedroruviaro.com.br/)
