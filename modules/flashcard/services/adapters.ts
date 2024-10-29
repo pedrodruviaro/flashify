@@ -28,3 +28,15 @@ export function readAllAdapter(data: ReadOneRow[] | null): Flashcard[] | null {
 
   return values
 }
+
+export function readOneAdapter(data: ReadOneRow | null): Flashcard | null {
+  if (!data) return null
+
+  return {
+    id: data.id,
+    deckId: data.deck_id,
+    question: data.question,
+    answer: data.answer,
+    createdAt: new Date(data.created_at),
+  }
+}

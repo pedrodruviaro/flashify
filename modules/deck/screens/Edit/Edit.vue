@@ -10,11 +10,12 @@ import LazyFlashcardModalForm from "~/modules/flashcard/components/Modals/Form.v
 import { useDeck } from "~/modules/deck/composables/useDeck"
 import { useDeckEdit } from "~/modules/deck/composables/useDeckEdit"
 import { useFlashcardCreate } from "~/modules/flashcard/composables/useFlashcardCreate"
-import type { ModalTypeAction } from "~/modules/flashcard/components/Modals/Form.vue"
 import { useFlashcardRemove } from "~/modules/flashcard/composables/useFlaschardRemove"
+import { useFlashcardEdit } from "~/modules/flashcard/composables/useFlashcardEdit"
+import type { ModalTypeAction } from "~/modules/flashcard/components/Modals/Form.vue"
+import type { Flashcard } from "~/modules/flashcard/entities/Flashcard/Flashcard"
 
 // Deck
-// @ TODO -> redirect if deckId doesnt exist (?)
 const route = useRoute()
 const deckId = computed(() => route.params.id as string)
 
@@ -45,11 +46,11 @@ const isModalOpen = ref(false)
 
 const answer = ref("")
 const question = ref("")
+const flashcardIdToEdit = ref()
 const modalAction = ref<ModalTypeAction>("create")
 
 const { loading: loadingCreate, create } = useFlashcardCreate({ deck })
-
-// const { loading: loadingEdit, edit } = useQuestionEdit()
+const { loading: loadingEdit, edit: editFlashcard } = useFlashcardEdit()
 
 const handleQuestionForm = async () => {
   if (modalAction.value === "create") {
@@ -65,17 +66,40 @@ const handleQuestionForm = async () => {
       answer.value = ""
       question.value = ""
     }
-
     return
   }
 
-  // edit logic
+  // Edit
+  const editedFlashcard = await editFlashcard(flashcardIdToEdit.value, {
+    question: question.value,
+    answer: answer.value,
+  })
+
+  if (!editedFlashcard) return
+
+  isModalOpen.value = false
+
+  const idx = deck.value?.flashcards.findIndex(
+    (f) => f.id === editedFlashcard.id
+  )
+
+  if (idx !== undefined && deck.value?.flashcards) {
+    const newArr = [...deck.value.flashcards]
+
+    newArr[idx] = editedFlashcard
+    deck.value.flashcards = [...newArr]
+  }
 }
 
-const handleEditQuestion = () => {}
+const handleEditQuestion = async (flashcard: Flashcard) => {
+  modalAction.value = "edit"
+  isModalOpen.value = true
+  answer.value = flashcard.answer
+  question.value = flashcard.question
+  flashcardIdToEdit.value = flashcard.id
+}
 
-const { loading: loadingRemove, remove } = useFlashcardRemove()
-
+const { remove } = useFlashcardRemove()
 const modal = useModal()
 
 const handleRemoveQuestion = async (id: string) => {
@@ -132,7 +156,7 @@ onMounted(() => getDeck())
             :id="card.id"
             :question="card.question"
             :answer="card.answer"
-            @edit="handleEditQuestion"
+            @edit="handleEditQuestion(card)"
             @remove="handleRemoveQuestion"
           />
         </FlashcardEditList>
@@ -146,7 +170,7 @@ onMounted(() => getDeck())
       v-model:question="question"
       v-model:answer="answer"
       :action="modalAction"
-      :loading="loadingCreate"
+      :loading="loadingCreate || loadingEditDeck"
       @submited="handleQuestionForm"
     />
   </div>
