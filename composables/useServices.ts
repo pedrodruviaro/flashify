@@ -1,6 +1,7 @@
 import AuthServices from "~/modules/auth/services/services"
 import UserServices from "~/modules/user/services/services"
 import DeckServices from "~/modules/deck/services/services"
+import FlashcardServices from "~/modules/flashcard/services/services"
 import type { Database } from "~/supabase/schema"
 
 export function useServices() {
@@ -12,5 +13,6 @@ export function useServices() {
     auth: AuthServices(supabase, { redirectUrl }),
     user: UserServices(supabase),
     deck: DeckServices(supabase),
+    flashcard: FlashcardServices(supabase),
   }
 }
