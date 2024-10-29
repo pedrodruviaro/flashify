@@ -2,7 +2,9 @@
 import AdminHeaderLoader from "~/modules/auth/components/Header/Loader.vue"
 import AdminHeader from "~/modules/auth/components/Header/Header.vue"
 import SidebarContent from "~/modules/auth/components/Sidebar/Content.vue"
+import LazyModalLogout from "~/modules/auth/components/Modals/Logout.vue"
 import { useGetMe } from "~/modules/user/composables/useGetMe"
+import { useAuthActions } from "~/modules/auth/composables/useAuthActions"
 
 const isSidebarOpen = ref(false)
 
@@ -11,6 +13,28 @@ const handleSidebarState = (state: boolean) => {
 }
 
 const { loading: loadingUser, user } = useGetMe()
+
+const router = useRouter()
+const modal = useModal()
+const toast = useToast()
+const { logout } = useAuthActions()
+
+const handleLogout = async () => {
+  modal.open(LazyModalLogout, {
+    onConfirm: async () => {
+      await logout()
+      modal.close()
+      toast.add({
+        title: "Volte logo!",
+        description: "Esperamos você numa próxima",
+        timeout: 3000,
+        color: "green",
+      })
+      router.push("/")
+    },
+    onClose: () => modal.close(),
+  })
+}
 </script>
 
 <template>
@@ -26,6 +50,7 @@ const { loading: loadingUser, user } = useGetMe()
         v-if="user"
         :avatarUrl="user?.avatarUrl"
         @close-sidebar="handleSidebarState(false)"
+        @logout="handleLogout"
       />
     </USlideover>
 
