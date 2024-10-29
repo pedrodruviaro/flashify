@@ -27,7 +27,7 @@ const rightAnswersLabel = computed(() => {
 })
 
 const progress = computed(() => {
-  return (100 * props.answered) / props.numOfCards
+  return (100 * props.answered) / props.numOfCards || 0
 })
 </script>
 
