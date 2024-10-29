@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid"
-import { getDeckByIdAdapter, readAllAdapter } from "./adapters"
+import { readAllAdapter, readFullDeckAdapter } from "./adapters"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from "~/supabase/schema"
 import type {
   CreateOptions,
-  GetDeckByIdOptions,
+  GetFullDeckOptions,
   ReadOneRow,
   UpdateOptions,
 } from "./types"
@@ -31,15 +31,14 @@ export default (client: SupabaseClient<Database>) => ({
     return { id }
   },
 
-  async getDeckById({ id, userId }: GetDeckByIdOptions) {
+  async getFullDeck({ id, userId }: GetFullDeckOptions) {
     const response = await client
       .from("decks")
-      .select("*")
+      .select("*, flashcards(*)")
       .match({ id: id, user_id: userId })
-      .returns<ReadOneRow>()
       .single()
 
-    return getDeckByIdAdapter(response.data)
+    return readFullDeckAdapter(response.data)
   },
 
   async update(id: string, { title, description }: UpdateOptions) {

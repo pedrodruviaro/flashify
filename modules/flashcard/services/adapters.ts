@@ -12,3 +12,19 @@ export function createAdpater(data: ReadOneRow | null): Flashcard | null {
     createdAt: new Date(data.created_at),
   }
 }
+
+export function readAllAdapter(data: ReadOneRow[] | null): Flashcard[] | null {
+  if (!data) return null
+
+  const values = data.map((value) => {
+    return {
+      id: value.id,
+      deckId: value.deck_id,
+      question: value.question,
+      answer: value.answer,
+      createdAt: new Date(value.created_at),
+    }
+  })
+
+  return values
+}

@@ -12,5 +12,5 @@ const props = defineProps<{
     <USkeleton class="w-40 h-8" />
   </div>
 
-  <slot />
+  <slot v-else />
 </template>

@@ -1,5 +1,5 @@
-import type { Deck } from "~/modules/deck/entities/Deck/Deck"
-import type { ReadOneRow } from "./types"
+import type { Deck, DeckVirtual } from "~/modules/deck/entities/Deck/Deck"
+import type { ReadFullDeckRow, ReadOneRow } from "./types"
 
 export function readAllAdapter(data: ReadOneRow[] | null): Deck[] | null {
   if (!data) return null
@@ -17,8 +17,20 @@ export function readAllAdapter(data: ReadOneRow[] | null): Deck[] | null {
   return values
 }
 
-export function getDeckByIdAdapter(data: ReadOneRow | null): Deck | null {
+export function readFullDeckAdapter(
+  data: ReadFullDeckRow | null
+): DeckVirtual | null {
   if (!data) return null
+
+  const flashcards = data.flashcards.map((card) => {
+    return {
+      id: card.id,
+      deckId: card.deck_id,
+      question: card.question,
+      answer: card.answer,
+      createdAt: new Date(card.created_at),
+    }
+  })
 
   return {
     id: data.id,
@@ -26,5 +38,6 @@ export function getDeckByIdAdapter(data: ReadOneRow | null): Deck | null {
     description: data.description,
     userId: data.user_id,
     createdAt: new Date(data.created_at),
+    flashcards,
   }
 }

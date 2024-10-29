@@ -1,5 +1,5 @@
 import type { User } from "~/modules/user/entities/User/User"
-import type { Deck } from "~/modules/deck/entities/Deck/Deck"
+import type { DeckVirtual } from "~/modules/deck/entities/Deck/Deck"
 
 export interface UseDeckOptions {
   user: Ref<User | undefined>
@@ -8,22 +8,26 @@ export interface UseDeckOptions {
 
 export function useDeck({ user, id }: UseDeckOptions) {
   const services = useServices()
+  const router = useRouter()
   const { logger } = useLogger()
 
   const loading = ref(false)
   const userId = ref()
-  const deck = ref<Deck>()
+  const deck = ref<DeckVirtual>()
 
   const getDeck = async () => {
     try {
       loading.value = true
 
-      const response = await services.deck.getDeckById({
+      const response = await services.deck.getFullDeck({
         id,
         userId: userId.value,
       })
 
-      if (!response) return
+      if (!response) {
+        router.push("/dashboard")
+        return
+      }
 
       deck.value = response
     } catch (error) {

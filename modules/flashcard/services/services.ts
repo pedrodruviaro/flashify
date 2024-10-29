@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { Database } from "~/supabase/schema"
-import type { CreateOptions } from "./types"
-import { createAdpater } from "./adapters"
+import type { CreateOptions, ReadOneRow } from "./types"
+import { createAdpater, readAllAdapter } from "./adapters"
 
 export default (client: SupabaseClient<Database>) => ({
   async create({ question, answer, deckId }: CreateOptions) {
@@ -20,6 +20,4 @@ export default (client: SupabaseClient<Database>) => ({
   async edit() {},
 
   async remove() {},
-
-  async readAll(deckId: string) {},
 })
