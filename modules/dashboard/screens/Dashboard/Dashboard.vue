@@ -65,7 +65,7 @@ const handleNewDeck = async () => {
           :description="deck.description"
           :createdAt="deck.createdAt"
           @edit="router.push(`/dashboard/decks/${deck.id}`)"
-          @play="router.push(`/dashboard/decks/${deck.id}`)"
+          @play="router.push(`/play/${deck.id}`)"
         />
       </DeckList>
 

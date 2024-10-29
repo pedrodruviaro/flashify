@@ -22,7 +22,8 @@ useHead({
 
 <style>
 body,
-html {
-  @apply bg-stone-50;
+html,
+#__nuxt {
+  @apply min-h-screen bg-stone-50;
 }
 </style>
