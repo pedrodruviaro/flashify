@@ -36,6 +36,7 @@ export default (client: SupabaseClient<Database>) => ({
       .from("decks")
       .select("*, flashcards(*)")
       .match({ id: id, user_id: userId })
+      .order("created_at", { referencedTable: "flashcards", ascending: false })
       .single()
 
     return readFullDeckAdapter(response.data)

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const emit = defineEmits(["success", "close"])
+const emit = defineEmits(["confirm", "close"])
 </script>
 
 <template>
@@ -12,8 +12,13 @@ const emit = defineEmits(["success", "close"])
         <p>Deseja realmente apagar a pergunta?</p>
 
         <div class="flex flex-wrap gap-2 items-center mt-4">
-          <UButton label="Voltar" variant="outline" @click="emit('close')" />
-          <UButton label="Confirmar" color="red" @click="emit('success')" />
+          <UButton
+            tabindex="0"
+            label="Voltar"
+            variant="outline"
+            @click="emit('close')"
+          />
+          <UButton label="Confirmar" color="red" @click="emit('confirm')" />
         </div>
       </template>
     </UCard>

@@ -11,6 +11,7 @@ import { useDeck } from "~/modules/deck/composables/useDeck"
 import { useDeckEdit } from "~/modules/deck/composables/useDeckEdit"
 import { useFlashcardCreate } from "~/modules/flashcard/composables/useFlashcardCreate"
 import type { ModalTypeAction } from "~/modules/flashcard/components/Modals/Form.vue"
+import { useFlashcardRemove } from "~/modules/flashcard/composables/useFlaschardRemove"
 
 // Deck
 // @ TODO -> redirect if deckId doesnt exist (?)
@@ -52,12 +53,18 @@ const { loading: loadingCreate, create } = useFlashcardCreate({ deck })
 
 const handleQuestionForm = async () => {
   if (modalAction.value === "create") {
-    // create logic
     const createdFlashcard = await create({
       question: question.value,
       answer: answer.value,
     })
-    console.log(createdFlashcard)
+
+    if (createdFlashcard) {
+      isModalOpen.value = false
+      deck.value?.flashcards.unshift(createdFlashcard)
+
+      answer.value = ""
+      question.value = ""
+    }
 
     return
   }
@@ -67,21 +74,24 @@ const handleQuestionForm = async () => {
 
 const handleEditQuestion = () => {}
 
-const handleRemoveQuestion = () => {}
+const { loading: loadingRemove, remove } = useFlashcardRemove()
 
-// const { loading: loadingRemove, remove } = useQuestionRemove({ question })
+const modal = useModal()
 
-// const modal = useModal()
+const handleRemoveQuestion = async (id: string) => {
+  modal.open(LazyFlashcardModalDelete, {
+    onConfirm: async () => {
+      await remove(id)
+      modal.close()
 
-// const handleRemoveQuestion = async (id: string) => {
-//   modal.open(LazyModalDeleteCard, {
-//     onSuccess: () => {
-//       // REMOVE QUESTION LOGIC
-//       modal.close()
-//     },
-//     onClose: () => modal.close(),
-//   })
-// }
+      const newFlaschards = deck.value?.flashcards.filter((f) => f.id !== id)
+      if (newFlaschards && deck.value?.flashcards) {
+        deck.value.flashcards = newFlaschards
+      }
+    },
+    onClose: () => modal.close(),
+  })
+}
 
 onMounted(() => getDeck())
 </script>
@@ -91,7 +101,7 @@ onMounted(() => getDeck())
   @TODO -> add CTA to remove entire deck 
   @TODO -> adicionar validação ao form de criação
   -->
-  <div class="space-y-8 md:space-y-10">
+  <div class="space-y-10 md:space-y-16">
     <HeadlineLoader :loading="loadingDeck">
       <Headline
         v-model:title="title"
@@ -101,8 +111,6 @@ onMounted(() => getDeck())
         @save="edit"
       />
     </HeadlineLoader>
-
-    <UDivider icon="i-heroicons-academic-cap" />
 
     <section>
       <!-- ADD LOADER E COMPONENTIZAR -->
@@ -117,7 +125,7 @@ onMounted(() => getDeck())
       </div>
 
       <FlashcardEditListLoader :loading="loadingDeck">
-        <FlashcardEditList v-if="hasFlashcards">
+        <FlashcardEditList v-if="hasFlashcards" v-auto-animate>
           <FlashcardEditCard
             v-for="card in deck?.flashcards"
             :key="card.id"
