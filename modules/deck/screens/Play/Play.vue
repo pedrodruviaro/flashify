@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LazyModalNeedHelp from "~/modules/deck/components/Modals/NeedHelp.vue"
 import HelpLoader from "~/modules/deck/components/Play/Help/Loader.vue"
 import Help from "~/modules/deck/components/Play/Help/Help.vue"
 import InfosLoader from "~/modules/deck/components/Play/Infos/Loader.vue"
@@ -60,12 +61,18 @@ const handleShowAnswer = (card: Flashcard, showActions?: boolean) => {
     onClose: () => modal.close(),
   })
 }
+
+const handleShowHelp = () => {
+  modal.open(LazyModalNeedHelp, {
+    onClose: () => modal.close(),
+  })
+}
 </script>
 
 <template>
   <div class="space-y-10">
     <HelpLoader :loading="loading">
-      <Help @need-help="() => console.log('* need help')" />
+      <Help @need-help="handleShowHelp" />
     </HelpLoader>
 
     <InfosLoader :loading="loading">
