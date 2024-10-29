@@ -58,12 +58,6 @@ const handleNewDeck = async () => {
       />
     </HeadlineLoader>
 
-    <p class="text-red-400 text-xs">{{ search }}</p>
-
-    <pre class="text-xs">
-      {{ filteredDecks }}
-    </pre>
-
     <ActionBarLoader :loading="false">
       <ActionBar v-model:search="search" @new-deck="isModalCreateOpen = true" />
     </ActionBarLoader>
