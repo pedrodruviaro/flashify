@@ -1,5 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <span class="font-bold text-2xl">Flashify</span>
+  <div>
+    <img src="/public/images/logo.svg" width="152" height="36" alt="Flashify" />
+  </div>
 </template>
