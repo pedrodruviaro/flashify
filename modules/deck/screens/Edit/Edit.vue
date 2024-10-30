@@ -21,6 +21,7 @@ import type { Flashcard } from "~/modules/flashcard/entities/Flashcard/Flashcard
 
 // Deck
 const route = useRoute()
+const router = useRouter()
 const deckId = computed(() => route.params.id as string)
 
 const { user } = useUser()
@@ -149,6 +150,7 @@ onMounted(() => getDeck())
         :loading="loadingEditDeck"
         :errors="errors"
         @save="edit"
+        @play="() => router.push(`/play/${deck?.id}`)"
       />
     </HeadlineLoader>
 

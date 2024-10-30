@@ -9,6 +9,7 @@ const props = defineProps<{
 
 const emits = defineEmits<{
   (e: "save"): void
+  (e: "play"): void
 }>()
 
 const title = defineModel<string>("title")
@@ -17,6 +18,17 @@ const description = defineModel<string>("description")
 
 <template>
   <section>
+    <div class="flex justify-end mb-2">
+      <UButton
+        label="Jogar"
+        icon="i-heroicons-play"
+        size="lg"
+        variant="outline"
+        color="green"
+        @click="emits('play')"
+      />
+    </div>
+
     <BaseTitle
       as="h1"
       size="sm"

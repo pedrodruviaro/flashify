@@ -6,6 +6,7 @@ const props = defineProps<{
 
 <template>
   <div v-if="props.loading" class="grid gap-2">
+    <USkeleton class="w-32 h-10 ml-auto" />
     <USkeleton class="w-52 h-6" />
     <USkeleton class="w-full h-14" />
     <USkeleton class="w-full h-24" />
