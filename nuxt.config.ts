@@ -37,4 +37,7 @@ export default defineNuxtConfig({
   robots: {
     disallow: ["/dashboard", "/play"],
   },
+  app: {
+    pageTransition: { name: "page", mode: "out-in" },
+  },
 })
