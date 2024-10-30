@@ -1,5 +1,5 @@
 <script setup lang="ts">
-type Sizes = "xs" | "sm" | "md" | "lg"
+type Sizes = "xs" | "sm" | "md" | "lg" | "xl"
 
 type TitleSize = {
   [key in Sizes]: string
@@ -25,6 +25,7 @@ const titleSize: TitleSize = {
   sm: "text-lg md:text-xl",
   md: "text-xl md:text-2xl",
   lg: "text-2xl md:text-3xl",
+  xl: "text-3xl lg:text-4xl",
 }
 </script>
 

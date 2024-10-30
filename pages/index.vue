@@ -1,11 +1,12 @@
 <script setup lang="ts">
-const toast = useToast()
+import LandingPage from "~/modules/landing-page/screens/LandingPage/LandingPage.vue"
+
+useSeoMeta({
+  title: "Estude de forma fácil e divertida",
+  description: "Utilize flashcards, melhore sua memória e aprenda mais rápido",
+})
 </script>
 
 <template>
-  <div class="flex flex-col gap-2 items-center">
-    <div>Landing Page</div>
-    <UButton @click="toast.add({ title: 'Hello NuxtUI' })" label="Hello vue" />
-    <UButton variant="outline" to="/login">Login</UButton>
-  </div>
+  <LandingPage />
 </template>

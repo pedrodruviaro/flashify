@@ -17,7 +17,7 @@ const { loading, login } = useAuthActions()
     </div>
 
     <BaseTitle size="lg" light label="Bem vindo!" />
-    <p class="lg:text-lg text-stone-600 text-center text-balance mx-auto">
+    <p class="lg:text-lg text-stone-600 text-center text-balance mx-auto mb-4">
       Entre com sua conta Google e comece agora
     </p>
     <UButton
