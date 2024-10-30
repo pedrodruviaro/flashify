@@ -1,18 +1,29 @@
-# Flashify
+<div align="center">
+<img src="public/images/logo-readme.png"  alt="Logo" width="220" height="52" />
+    <br />
+    <br />
 
-- [Ver ao vivo](https://flashify.pedroruviaro.com.br/)
+  <p align="center">    
+  Utilize flashcards, melhore sua memória e aprenda mais rápido.
+    <br />
+    <br />
+    <a href="https://flashify.pedroruviaro.com.br">Veja ao vivo</a>
+    <br />
+  </p>
+</div>
 
 ## Concepção
 
-## Motivo
+O projeto foi feito com finalidade de estudo e prática das tecnologias.
 
 ## Stack
 
-O projeto usa Nuxt, Supabase e NuxtUI como módulos principais.
+- **Nuxt**
+- **Supabase**
+- **TypeScript**
+- **NuxtUI**
 
-## Telas
-
----
+![login](/public/images/hero-img.png)
 
 Dúvidas? Fale comigo e vamos conversar :)
 
