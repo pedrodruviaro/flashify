@@ -12,6 +12,15 @@
   </p>
 </div>
 
+## Features
+
+[x] Login social e possibilidade de editar informações do perfil
+[x] Criação de decks e flashcards dentro dele
+[x] Página de jogo para praticar os conhecimentos
+
+[] Compartilhamento de perfil com os decks públicos criados
+[] Compartilhamento do deck para jogo de outras pessoas
+
 ## Concepção
 
 O projeto foi feito com finalidade de estudo e prática das tecnologias.
